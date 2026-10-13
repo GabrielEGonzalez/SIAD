@@ -1,0 +1,106 @@
+* { font-family: 'Poppins', sans-serif; box-sizing: border-box; }
+        body { display: flex; margin: 0; background: #F3F6FB; }
+
+
+        /* PANEL PRINCIPAL */
+        .main { flex: 1; padding: 22px; }
+
+        .top-bar {
+            background: #fff; border: 1px solid #dcdcdc;
+            padding: 14px 22px; border-radius: 8px;
+            margin-bottom: 8px; display: flex; justify-content: space-between;
+            align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        /* MULTIPASO */
+        .multi-container {
+            margin-top: 25px; background: white;
+            padding: 25px; border-radius: 15px;
+            max-width: 850px; margin-inline: auto;
+        }
+
+        .steps-header { display: flex; justify-content: space-between; margin-bottom: 25px; }
+        .step-indicator { width: calc(100%/6); text-align: center; }
+        .step-circle {
+            width: 42px;height: 42px;border-radius: 50%;
+            border: 2px solid #999;display: flex;
+            align-items: center; justify-content: center;
+            margin: auto; margin-bottom: 6px; font-weight: 600;
+        }
+        .step-indicator.active .step-circle { background: #118A7E; color: #fff; border-color:#118A7E; }
+
+        .step { display: none; }
+        .step.active {
+            display: block;
+            animation: fadeIn .3s ease-in-out;
+        }
+
+        @keyframes fadeIn { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+
+        label { font-weight: 500; margin-top: 12px; display: block; }
+        input, select, textarea {
+            width: 100%; padding: 10px; border-radius: 7px;
+            border: 1px solid #ccc; margin-top: 5px;
+        }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        table th, table td { border: 1px solid #ccc; padding: 8px; }
+
+        .buttons {
+            display: flex; justify-content: space-between;
+            margin-top: 22px;
+        }
+        .btn { background:#118A7E;color:white;padding:10px 20px;border:none;border-radius:7px;font-weight:600;cursor:pointer; }
+        .btn-secondary { background:#737373; }
+        .btn:disabled { background:#ccc; }
+
+        /* --- Radios & Checkboxes profesionales --- */
+        .custom-radio,
+        .custom-check {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            cursor: pointer;
+            font-size: 15px;
+            gap: 8px;
+        }
+
+        .custom-radio input,
+        .custom-check input {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #118A7E;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .custom-radio input:checked::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            background: #118A7E;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+        }
+
+        .custom-check input {
+            border-radius: 4px;
+        }
+
+        .custom-check input:checked::before {
+            content: "✔";
+            color: white;
+            font-size: 12px;
+            position: absolute;
+            top: -2px;
+            left: 3px;
+        }
+
+        .custom-check input:checked {
+            background-color: #118A7E;
+            border-color: #118A7E;
+        }

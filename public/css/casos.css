@@ -1,0 +1,102 @@
+/* --- SECCIÓN --- */
+.section-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- FILTROS --- */
+.filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.filters input,
+.filters select {
+    padding: 8px 12px;
+    border: 1px solid #cbd5c0;
+    border-radius: 6px;
+}
+
+/* --- BOTÓN FILTRAR --- */
+.btn-filter {
+    background: #118A7E;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-filter:hover {
+    background: #0d5a25;
+}
+
+/* --- TABLA --- */
+.table-container {
+    overflow-x: auto;
+}
+
+.cases-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.cases-table thead {
+    background: #118A7E;
+    color: #fff;
+}
+
+.cases-table th,
+.cases-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e2e6e0;
+}
+
+/* --- TAGS --- */
+.tag {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.tag.success {
+    background: #c9f7d4;
+    color: #0d5a25;
+}
+
+.tag.warning {
+    background: #fff4c2;
+    color: #856404;
+}
+
+/* --- ACCIONES --- */
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px;
+    border-radius: 6px;
+    margin-right: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.action-btn.view { color: #0b421b; }
+.action-btn.edit { color: #1d6fb8; }
+.action-btn.note { color: #6a2dbf; }
+
+/* Hover */
+.action-btn:hover {
+    transform: scale(1.1);
+    background: #eef3ea;
+}

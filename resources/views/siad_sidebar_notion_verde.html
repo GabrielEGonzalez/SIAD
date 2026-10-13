@@ -1,0 +1,511 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.app { display: flex; height: 680px; font-family: var(--font-sans); overflow: hidden; }
+
+/* ── SIDEBAR ── */
+.sb {
+  width: 72px;
+  background: #1a2e1a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 0 14px;
+  gap: 0;
+  border-right: none;
+  position: relative;
+  z-index: 2;
+}
+
+.sb-logo {
+  width: 40px; height: 40px;
+  background: #4a7c4a;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #e8f0e8;
+  letter-spacing: -0.5px;
+  margin-bottom: 28px;
+  flex-shrink: 0;
+}
+
+.sb-nav {
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  width: 100%;
+  padding: 0 10px;
+}
+
+.sb-item {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  color: #5a7a5a;
+  transition: background 0.15s, color 0.15s;
+  position: relative;
+}
+.sb-item:hover { background: #243824; color: #a8c8a0; }
+.sb-item.active { background: #2d4a2d; color: #c8e0c0; }
+.sb-item.active::before {
+  content: '';
+  position: absolute;
+  left: -10px; top: 50%; transform: translateY(-50%);
+  width: 3px; height: 24px;
+  background: #6aaa6a;
+  border-radius: 0 3px 3px 0;
+}
+.sb-item i { font-size: 20px; line-height: 1; }
+.sb-item span { font-size: 9px; letter-spacing: 0.3px; font-weight: 500; }
+
+.sb-divider {
+  width: 32px; height: 0.5px;
+  background: #2d3d2d;
+  margin: 10px 0;
+}
+
+.sb-bottom {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  padding: 0 10px;
+}
+.sb-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: #3d6b3d;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: #c8e0c0;
+  cursor: pointer;
+  border: 1.5px solid #4a7a4a;
+}
+.sb-logout {
+  width: 34px; height: 34px; border-radius: 10px;
+  background: none; border: none; cursor: pointer;
+  color: #4a6a4a; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.sb-logout:hover { background: #243824; color: #e07070; }
+
+/* Tooltip on hover */
+.sb-item { position: relative; }
+.tooltip {
+  position: absolute;
+  left: 58px; top: 50%; transform: translateY(-50%);
+  background: #1a2e1a;
+  color: #c8e0c0;
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 100;
+  border: 0.5px solid #3d5a3d;
+}
+.sb-item:hover .tooltip { opacity: 1; }
+
+/* ── MAIN ── */
+.main {
+  flex: 1;
+  background: #f5f3ee;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* Topbar */
+.topbar {
+  background: #f5f3ee;
+  padding: 20px 28px 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.page-title { font-size: 22px; font-weight: 500; color: #1a2e1a; line-height: 1.1; }
+.page-sub { font-size: 13px; color: #8a9e8a; margin-top: 3px; }
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+.t-btn {
+  height: 34px; border-radius: 8px;
+  border: 0.5px solid #d8d4c8; background: white;
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 12px; cursor: pointer;
+  font-size: 12px; color: #5a6e5a;
+}
+.t-btn:hover { background: #eceae4; }
+.t-btn i { font-size: 15px; }
+.t-notif { position: relative; }
+.notif-dot {
+  position: absolute; top: 5px; right: 5px;
+  width: 7px; height: 7px;
+  background: #6aaa6a; border-radius: 50%;
+  border: 1.5px solid #f5f3ee;
+}
+
+/* Content */
+.content { padding: 20px 28px 28px; }
+
+/* Stats */
+.stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 22px; }
+.scard {
+  background: white;
+  border-radius: 14px;
+  border: 0.5px solid #e0ddd6;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.scard::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+}
+.scard.c1::after { background: #4a8c4a; }
+.scard.c2::after { background: #c8a84a; }
+.scard.c3::after { background: #6a9abf; }
+
+.sc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.sc-label { font-size: 12px; color: #8a9e8a; font-weight: 500; letter-spacing: 0.3px; }
+.sc-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+}
+.sc-icon.g { background: #edf4ed; color: #4a8c4a; }
+.sc-icon.y { background: #fdf6e3; color: #c8a84a; }
+.sc-icon.b { background: #e8f2f8; color: #6a9abf; }
+.sc-num { font-size: 28px; font-weight: 500; color: #1a2e1a; line-height: 1; }
+.sc-sub { font-size: 11px; color: #a0b0a0; margin-top: 5px; }
+
+/* Two column grid */
+.grid2 { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 14px; margin-bottom: 18px; }
+.card {
+  background: white; border-radius: 14px;
+  border: 0.5px solid #e0ddd6; padding: 18px 20px;
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.card-title { font-size: 13px; font-weight: 500; color: #2a3e2a; letter-spacing: 0.2px; }
+.card-link { font-size: 11px; color: #4a8c4a; cursor: pointer; }
+
+/* Mini calendar */
+.cal-days { display: grid; grid-template-columns: repeat(7,1fr); gap: 1px; }
+.cdn { text-align:center; font-size:10px; color:#a0b0a0; padding:3px 0; font-weight:500; }
+.cd {
+  text-align:center; font-size:12px; padding:5px 1px;
+  border-radius: 7px; cursor:pointer; color:#4a5e4a;
+}
+.cd:hover { background:#edf4ed; }
+.cd.t {
+  background: #3d6b3d; color: white; border-radius: 50%;
+  width: 26px; height: 26px; margin: auto;
+  display:flex; align-items:center; justify-content:center;
+}
+.cd.ev { position:relative; }
+.cd.ev::after {
+  content:''; position:absolute; bottom:1px; left:50%; transform:translateX(-50%);
+  width:4px; height:4px; background:#6aaa6a; border-radius:50%;
+}
+.cd.t.ev::after { background: rgba(255,255,255,0.6); }
+.cd.m { color:#c8c4bc; }
+.cal-month { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.cal-mon-lbl { font-size:13px; font-weight:500; color:#1a2e1a; }
+.cal-nav { display:flex; gap:4px; }
+.cnav {
+  width:22px; height:22px; border-radius:6px;
+  border: 0.5px solid #d8d4c8; background:none; cursor:pointer;
+  color:#6a8a6a; font-size:11px;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* Citas list */
+.cita {
+  display:flex; align-items:center; gap:10px;
+  padding: 9px 0;
+  border-bottom: 0.5px solid #f0ede6;
+}
+.cita:last-child { border-bottom:none; }
+.ct-time { font-size:11px; color:#a0b0a0; min-width:38px; font-weight:500; }
+.ct-bar { width:3px; height:32px; border-radius:2px; flex-shrink:0; }
+.ct-bar.g { background:#4a8c4a; }
+.ct-bar.y { background:#c8a84a; }
+.ct-bar.b { background:#6a9abf; }
+.ct-info { flex:1; }
+.ct-name { font-size:13px; color:#1e2e1e; font-weight:500; }
+.ct-tipo { font-size:11px; color:#a0b0a0; }
+.ct-badge {
+  font-size:10px; padding:3px 9px; border-radius:20px; font-weight:500;
+}
+.ct-badge.ok { background:#edf4ed; color:#3a6e3a; }
+.ct-badge.pend { background:#fdf6e3; color:#8a6a1a; }
+
+/* Quick actions */
+.qa-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:20px; }
+.qa {
+  background:white; border:0.5px solid #e0ddd6; border-radius:12px;
+  padding:14px 12px; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:7px;
+  transition: all 0.15s;
+}
+.qa:hover { border-color: #4a8c4a; background:#f8faf8; }
+.qa:hover .qa-icon { background:#edf4ed; color:#3a7a3a; }
+.qa-icon {
+  width:38px; height:38px; border-radius:10px;
+  background:#f0ede6; color:#6a8a6a; font-size:18px;
+  display:flex; align-items:center; justify-content:center;
+  transition: all 0.15s;
+}
+.qa span { font-size:11px; color:#5a6e5a; font-weight:500; text-align:center; }
+
+/* Table */
+.tbl { width:100%; border-collapse:collapse; }
+.tbl th { text-align:left; font-size:10px; color:#a0b0a0; font-weight:500; letter-spacing:0.5px; text-transform:uppercase; padding:6px 10px; border-bottom:0.5px solid #ede9e0; }
+.tbl td { font-size:12px; color:#2e3e2e; padding:9px 10px; border-bottom:0.5px solid #f5f2eb; }
+.tbl tr:last-child td { border-bottom:none; }
+.pill { display:inline-block; font-size:10px; padding:3px 9px; border-radius:20px; font-weight:500; }
+.pill.a { background:#edf4ed; color:#3a6e3a; }
+.pill.s { background:#e8f2f8; color:#2a5a8a; }
+.pill.c { background:#f5f2eb; color:#7a7060; }
+</style>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sb">
+    <div class="sb-logo">UP</div>
+
+    <nav class="sb-nav">
+      <div class="sb-item active">
+        <i class="ti ti-layout-dashboard" aria-hidden="true"></i>
+        <span>Inicio</span>
+        <div class="tooltip">Dashboard</div>
+      </div>
+      <div class="sb-item">
+        <i class="ti ti-users" aria-hidden="true"></i>
+        <span>Casos</span>
+        <div class="tooltip">Gestión de casos</div>
+      </div>
+      <div class="sb-item">
+        <i class="ti ti-file-plus" aria-hidden="true"></i>
+        <span>Nuevo</span>
+        <div class="tooltip">Registrar caso</div>
+      </div>
+
+      <div class="sb-divider"></div>
+
+      <div class="sb-item">
+        <i class="ti ti-chart-bar" aria-hidden="true"></i>
+        <span>Reportes</span>
+        <div class="tooltip">Estadísticas</div>
+      </div>
+      <div class="sb-item">
+        <i class="ti ti-calendar" aria-hidden="true"></i>
+        <span>Agenda</span>
+        <div class="tooltip">Agenda de citas</div>
+      </div>
+      <div class="sb-item">
+        <i class="ti ti-send" aria-hidden="true"></i>
+        <span>Enviar</span>
+        <div class="tooltip">Enviar reportes</div>
+      </div>
+    </nav>
+
+    <div class="sb-bottom">
+      <div class="sb-avatar" title="Administrador">AD</div>
+      <button class="sb-logout" title="Cerrar sesión">
+        <i class="ti ti-logout" aria-hidden="true"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Bienvenido, Admin</div>
+        <div class="page-sub">Miércoles, 7 de mayo 2025 · Panel de administración</div>
+      </div>
+      <div class="topbar-right">
+        <button class="t-btn">
+          <i class="ti ti-search" aria-hidden="true"></i>
+          Buscar
+        </button>
+        <button class="t-btn t-notif">
+          <i class="ti ti-bell" aria-hidden="true"></i>
+          <span class="notif-dot"></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- Stats -->
+      <div class="stats">
+        <div class="scard c1">
+          <div class="sc-top">
+            <span class="sc-label">Casos totales</span>
+            <div class="sc-icon g"><i class="ti ti-users" aria-hidden="true"></i></div>
+          </div>
+          <div class="sc-num">48</div>
+          <div class="sc-sub">↑ 3 nuevos este mes</div>
+        </div>
+        <div class="scard c2">
+          <div class="sc-top">
+            <span class="sc-label">En seguimiento</span>
+            <div class="sc-icon y"><i class="ti ti-activity" aria-hidden="true"></i></div>
+          </div>
+          <div class="sc-num">21</div>
+          <div class="sc-sub">44% del total activo</div>
+        </div>
+        <div class="scard c3">
+          <div class="sc-top">
+            <span class="sc-label">Citas hoy</span>
+            <div class="sc-icon b"><i class="ti ti-calendar-event" aria-hidden="true"></i></div>
+          </div>
+          <div class="sc-num">5</div>
+          <div class="sc-sub">Próxima a las 10:30 am</div>
+        </div>
+      </div>
+
+      <!-- Calendar + Citas -->
+      <div class="grid2">
+        <div class="card">
+          <div class="cal-month">
+            <span class="cal-mon-lbl">Mayo 2025</span>
+            <div class="cal-nav">
+              <button class="cnav">‹</button>
+              <button class="cnav">›</button>
+            </div>
+          </div>
+          <div class="cal-days">
+            <div class="cdn">L</div><div class="cdn">M</div><div class="cdn">X</div>
+            <div class="cdn">J</div><div class="cdn">V</div><div class="cdn">S</div><div class="cdn">D</div>
+            <div class="cd m">28</div><div class="cd m">29</div><div class="cd m">30</div>
+            <div class="cd">1</div><div class="cd">2</div><div class="cd">3</div><div class="cd">4</div>
+            <div class="cd">5</div><div class="cd">6</div>
+            <div class="cd t ev">7</div>
+            <div class="cd ev">8</div><div class="cd">9</div><div class="cd">10</div><div class="cd">11</div>
+            <div class="cd">12</div><div class="cd ev">13</div><div class="cd">14</div>
+            <div class="cd">15</div><div class="cd">16</div><div class="cd ev">17</div><div class="cd">18</div>
+            <div class="cd">19</div><div class="cd">20</div><div class="cd">21</div>
+            <div class="cd">22</div><div class="cd">23</div><div class="cd">24</div><div class="cd">25</div>
+            <div class="cd">26</div><div class="cd">27</div><div class="cd">28</div>
+            <div class="cd">29</div><div class="cd">30</div><div class="cd">31</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Citas de hoy</span>
+            <span class="card-link">Ver todas →</span>
+          </div>
+          <div class="cita">
+            <span class="ct-time">9:00</span>
+            <div class="ct-bar g"></div>
+            <div class="ct-info">
+              <div class="ct-name">María González</div>
+              <div class="ct-tipo">Seguimiento académico</div>
+            </div>
+            <span class="ct-badge ok">Confirmada</span>
+          </div>
+          <div class="cita">
+            <span class="ct-time">10:30</span>
+            <div class="ct-bar y"></div>
+            <div class="ct-info">
+              <div class="ct-name">Carlos Moreno</div>
+              <div class="ct-tipo">Primera consulta</div>
+            </div>
+            <span class="ct-badge pend">Pendiente</span>
+          </div>
+          <div class="cita">
+            <span class="ct-time">12:00</span>
+            <div class="ct-bar g"></div>
+            <div class="ct-info">
+              <div class="ct-name">Luis Pérez</div>
+              <div class="ct-tipo">Orientación</div>
+            </div>
+            <span class="ct-badge ok">Confirmada</span>
+          </div>
+          <div class="cita">
+            <span class="ct-time">14:30</span>
+            <div class="ct-bar b"></div>
+            <div class="ct-info">
+              <div class="ct-name">Ana Rodríguez</div>
+              <div class="ct-tipo">Seguimiento</div>
+            </div>
+            <span class="ct-badge ok">Confirmada</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="qa-grid">
+        <div class="qa">
+          <div class="qa-icon"><i class="ti ti-file-plus" aria-hidden="true"></i></div>
+          <span>Registrar caso</span>
+        </div>
+        <div class="qa">
+          <div class="qa-icon"><i class="ti ti-calendar-plus" aria-hidden="true"></i></div>
+          <span>Nueva cita</span>
+        </div>
+        <div class="qa">
+          <div class="qa-icon"><i class="ti ti-chart-bar" aria-hidden="true"></i></div>
+          <span>Generar reporte</span>
+        </div>
+      </div>
+
+      <!-- Recent cases -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Casos recientes</span>
+          <span class="card-link">Ver todos →</span>
+        </div>
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Estudiante</th>
+              <th>Tipo de caso</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Rosa Herrera</td>
+              <td style="color:#8a9e8a">Orientación vocacional</td>
+              <td style="color:#a0b0a0">05/05/2025</td>
+              <td><span class="pill a">Activo</span></td>
+            </tr>
+            <tr>
+              <td>Juan Morales</td>
+              <td style="color:#8a9e8a">Dificultad académica</td>
+              <td style="color:#a0b0a0">04/05/2025</td>
+              <td><span class="pill s">Seguimiento</span></td>
+            </tr>
+            <tr>
+              <td>Paola Castro</td>
+              <td style="color:#8a9e8a">Situación personal</td>
+              <td style="color:#a0b0a0">03/05/2025</td>
+              <td><span class="pill s">Seguimiento</span></td>
+            </tr>
+            <tr>
+              <td>Marcos Torres</td>
+              <td style="color:#8a9e8a">Orientación académica</td>
+              <td style="color:#a0b0a0">02/05/2025</td>
+              <td><span class="pill c">Cerrado</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="text-align:center;padding:20px 0 4px;font-size:11px;color:#b0a898">
+        © 2025 Universidad de Panamá · Sistema SIAD
+      </div>
+    </div>
+  </div>
+</div>

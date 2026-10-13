@@ -1,0 +1,420 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+
+  .app { display: flex; height: 100vh; min-height: 600px; overflow: hidden; }
+
+  .sidebar {
+    width: 220px; min-width: 220px;
+    background: #0f172a;
+    display: flex; flex-direction: column;
+    padding: 0;
+    position: relative;
+  }
+
+  .sidebar-header {
+    padding: 20px 18px 16px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-circle {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 14px; letter-spacing: -0.5px;
+  }
+  .sidebar-title { color: #f1f5f9; font-size: 16px; font-weight: 500; letter-spacing: 0.5px; }
+  .sidebar-sub { color: #64748b; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+
+  .nav { padding: 12px 10px; flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .nav-label { color: #475569; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 8px 8px 4px; }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px; border-radius: 8px;
+    color: #94a3b8; font-size: 13px; cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    text-decoration: none;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.06); color: #e2e8f0; }
+  .nav-item.active { background: rgba(59,130,246,0.18); color: #60a5fa; }
+  .nav-item.active i { color: #3b82f6; }
+  .nav-item i { font-size: 16px; width: 18px; }
+  .badge { background: #3b82f6; color: white; font-size: 10px; padding: 1px 6px; border-radius: 20px; margin-left: auto; }
+
+  .sidebar-footer {
+    padding: 12px 10px;
+    border-top: 0.5px solid rgba(255,255,255,0.08);
+  }
+  .user-pill {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; border-radius: 8px;
+    cursor: pointer;
+  }
+  .user-pill:hover { background: rgba(255,255,255,0.06); }
+  .avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 500; color: white;
+  }
+  .user-name { color: #cbd5e1; font-size: 12px; }
+  .user-role { color: #475569; font-size: 10px; }
+  .logout-btn {
+    margin-left: auto; background: none; border: none; cursor: pointer;
+    color: #475569; padding: 4px;
+  }
+  .logout-btn:hover { color: #ef4444; }
+
+  .main { flex: 1; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; }
+
+  .topbar {
+    background: white; border-bottom: 0.5px solid #e2e8f0;
+    padding: 14px 24px; display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .topbar-left h2 { font-size: 16px; font-weight: 500; color: #0f172a; }
+  .topbar-left p { font-size: 12px; color: #94a3b8; margin-top: 1px; }
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+  .icon-btn {
+    width: 34px; height: 34px; border-radius: 8px; border: 0.5px solid #e2e8f0;
+    background: white; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: #64748b; font-size: 16px; position: relative;
+  }
+  .icon-btn:hover { background: #f1f5f9; }
+  .notif-dot { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; background: #3b82f6; border-radius: 50%; }
+
+  .content { padding: 20px 24px; flex: 1; }
+
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .section-title { font-size: 13px; font-weight: 500; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
+  .see-all { font-size: 12px; color: #3b82f6; cursor: pointer; text-decoration: none; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .stat-card {
+    background: white; border-radius: 12px; border: 0.5px solid #e2e8f0;
+    padding: 16px 18px; display: flex; align-items: flex-start; gap: 12px;
+  }
+  .stat-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+    flex-shrink: 0;
+  }
+  .stat-icon.blue { background: #eff6ff; color: #3b82f6; }
+  .stat-icon.amber { background: #fffbeb; color: #f59e0b; }
+  .stat-icon.green { background: #f0fdf4; color: #22c55e; }
+  .stat-value { font-size: 22px; font-weight: 500; color: #0f172a; line-height: 1.1; }
+  .stat-label { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+  .stat-trend { font-size: 11px; margin-top: 6px; display: flex; align-items: center; gap: 3px; }
+  .trend-up { color: #22c55e; }
+  .trend-neutral { color: #94a3b8; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+
+  .card { background: white; border-radius: 12px; border: 0.5px solid #e2e8f0; padding: 16px 18px; }
+
+  .mini-cal { width: 100%; }
+  .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .cal-month { font-size: 14px; font-weight: 500; color: #0f172a; }
+  .cal-nav { display: flex; gap: 4px; }
+  .cal-nav-btn { width: 24px; height: 24px; border-radius: 6px; border: 0.5px solid #e2e8f0; background: none; cursor: pointer; color: #64748b; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+  .cal-day-name { text-align: center; font-size: 10px; color: #94a3b8; padding: 3px 0; font-weight: 500; }
+  .cal-day { text-align: center; font-size: 12px; padding: 5px 2px; border-radius: 6px; cursor: pointer; color: #475569; }
+  .cal-day:hover { background: #f1f5f9; }
+  .cal-day.today { background: #3b82f6; color: white; font-weight: 500; border-radius: 50%; width: 26px; height: 26px; margin: auto; display: flex; align-items: center; justify-content: center; }
+  .cal-day.has-event { position: relative; }
+  .cal-day.has-event::after { content: ''; position: absolute; bottom: 1px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background: #3b82f6; border-radius: 50%; }
+  .cal-day.today.has-event::after { background: white; }
+  .cal-day.muted { color: #cbd5e1; }
+
+  .citas-list { display: flex; flex-direction: column; gap: 8px; }
+  .cita-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid #f1f5f9; }
+  .cita-item:last-child { border-bottom: none; }
+  .cita-hora { font-size: 11px; color: #94a3b8; min-width: 40px; }
+  .cita-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .cita-dot.blue { background: #3b82f6; }
+  .cita-dot.green { background: #22c55e; }
+  .cita-dot.amber { background: #f59e0b; }
+  .cita-info { flex: 1; }
+  .cita-nombre { font-size: 13px; color: #1e293b; font-weight: 500; }
+  .cita-tipo { font-size: 11px; color: #94a3b8; }
+  .cita-status { font-size: 10px; padding: 2px 8px; border-radius: 20px; }
+  .cita-status.confirmada { background: #f0fdf4; color: #15803d; }
+  .cita-status.pendiente { background: #fffbeb; color: #b45309; }
+
+  .quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+  .q-btn {
+    background: white; border: 0.5px solid #e2e8f0; border-radius: 10px;
+    padding: 12px 14px; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    font-size: 12px; color: #475569; transition: all 0.15s;
+  }
+  .q-btn:hover { background: #f8fafc; border-color: #3b82f6; color: #3b82f6; }
+  .q-btn i { font-size: 20px; }
+
+  .recent-table { width: 100%; border-collapse: collapse; }
+  .recent-table th { text-align: left; font-size: 11px; color: #94a3b8; font-weight: 500; padding: 6px 8px; border-bottom: 0.5px solid #f1f5f9; text-transform: uppercase; letter-spacing: 0.5px; }
+  .recent-table td { font-size: 13px; color: #334155; padding: 9px 8px; border-bottom: 0.5px solid #f8fafc; }
+  .pill { display: inline-block; font-size: 10px; padding: 2px 9px; border-radius: 20px; font-weight: 500; }
+  .pill.activo { background: #f0fdf4; color: #15803d; }
+  .pill.seguimiento { background: #eff6ff; color: #1d4ed8; }
+  .pill.cerrado { background: #f1f5f9; color: #64748b; }
+</style>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-circle">UP</div>
+      <div>
+        <div class="sidebar-title">SIAD</div>
+        <div class="sidebar-sub">Universidad de Panamá</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-label">Principal</div>
+      <div class="nav-item active">
+        <i class="ti ti-layout-dashboard" aria-hidden="true"></i>
+        <span>Dashboard</span>
+      </div>
+      <div class="nav-item">
+        <i class="ti ti-users" aria-hidden="true"></i>
+        <span>Casos</span>
+        <span class="badge">12</span>
+      </div>
+      <div class="nav-item">
+        <i class="ti ti-file-plus" aria-hidden="true"></i>
+        <span>Registrar caso</span>
+      </div>
+      <div class="nav-label">Reportes</div>
+      <div class="nav-item">
+        <i class="ti ti-chart-bar" aria-hidden="true"></i>
+        <span>Estadísticos</span>
+      </div>
+      <div class="nav-item">
+        <i class="ti ti-calendar" aria-hidden="true"></i>
+        <span>Agenda de citas</span>
+      </div>
+      <div class="nav-item">
+        <i class="ti ti-send" aria-hidden="true"></i>
+        <span>Enviar reportes</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-pill">
+        <div class="avatar">AD</div>
+        <div>
+          <div class="user-name">Admin</div>
+          <div class="user-role">Administrador</div>
+        </div>
+        <button class="logout-btn" title="Cerrar sesión">
+          <i class="ti ti-logout" style="font-size:15px" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h2>Dashboard</h2>
+        <p>Miércoles, 7 de mayo 2025</p>
+      </div>
+      <div class="topbar-right">
+        <div class="icon-btn">
+          <i class="ti ti-bell" aria-hidden="true"></i>
+          <span class="notif-dot"></span>
+        </div>
+        <div class="icon-btn">
+          <i class="ti ti-search" aria-hidden="true"></i>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="section-header">
+        <span class="section-title">Resumen general</span>
+        <a class="see-all">Ver detalle →</a>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="ti ti-users" aria-hidden="true"></i></div>
+          <div>
+            <div class="stat-value">48</div>
+            <div class="stat-label">Casos totales</div>
+            <div class="stat-trend trend-up"><i class="ti ti-trending-up" style="font-size:12px" aria-hidden="true"></i> +3 este mes</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon amber"><i class="ti ti-activity" aria-hidden="true"></i></div>
+          <div>
+            <div class="stat-value">21</div>
+            <div class="stat-label">En seguimiento</div>
+            <div class="stat-trend trend-neutral">44% del total</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green"><i class="ti ti-calendar-event" aria-hidden="true"></i></div>
+          <div>
+            <div class="stat-value">5</div>
+            <div class="stat-label">Citas hoy</div>
+            <div class="stat-trend trend-up"><i class="ti ti-clock" style="font-size:12px" aria-hidden="true"></i> Próxima 10:30am</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-header" style="margin-bottom:10px">
+            <span class="section-title">Mayo 2025</span>
+            <div class="cal-nav">
+              <button class="cal-nav-btn">‹</button>
+              <button class="cal-nav-btn">›</button>
+            </div>
+          </div>
+          <div class="mini-cal">
+            <div class="cal-grid">
+              <div class="cal-day-name">L</div><div class="cal-day-name">M</div>
+              <div class="cal-day-name">X</div><div class="cal-day-name">J</div>
+              <div class="cal-day-name">V</div><div class="cal-day-name">S</div>
+              <div class="cal-day-name">D</div>
+              <div class="cal-day muted">28</div><div class="cal-day muted">29</div>
+              <div class="cal-day muted">30</div><div class="cal-day">1</div>
+              <div class="cal-day">2</div><div class="cal-day">3</div>
+              <div class="cal-day">4</div>
+              <div class="cal-day">5</div><div class="cal-day">6</div>
+              <div class="cal-day today has-event">7</div>
+              <div class="cal-day has-event">8</div><div class="cal-day">9</div>
+              <div class="cal-day">10</div><div class="cal-day">11</div>
+              <div class="cal-day">12</div><div class="cal-day has-event">13</div>
+              <div class="cal-day">14</div><div class="cal-day">15</div>
+              <div class="cal-day">16</div><div class="cal-day">17</div>
+              <div class="cal-day">18</div>
+              <div class="cal-day">19</div><div class="cal-day">20</div>
+              <div class="cal-day">21</div><div class="cal-day">22</div>
+              <div class="cal-day">23</div><div class="cal-day">24</div>
+              <div class="cal-day">25</div>
+              <div class="cal-day">26</div><div class="cal-day">27</div>
+              <div class="cal-day">28</div><div class="cal-day">29</div>
+              <div class="cal-day">30</div><div class="cal-day">31</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-header" style="margin-bottom:10px">
+            <span class="section-title">Citas de hoy</span>
+            <a class="see-all">Ver todas →</a>
+          </div>
+          <div class="citas-list">
+            <div class="cita-item">
+              <span class="cita-hora">9:00</span>
+              <div class="cita-dot blue"></div>
+              <div class="cita-info">
+                <div class="cita-nombre">María G.</div>
+                <div class="cita-tipo">Seguimiento académico</div>
+              </div>
+              <span class="cita-status confirmada">Confirmada</span>
+            </div>
+            <div class="cita-item">
+              <span class="cita-hora">10:30</span>
+              <div class="cita-dot amber"></div>
+              <div class="cita-info">
+                <div class="cita-nombre">Carlos M.</div>
+                <div class="cita-tipo">Primera consulta</div>
+              </div>
+              <span class="cita-status pendiente">Pendiente</span>
+            </div>
+            <div class="cita-item">
+              <span class="cita-hora">12:00</span>
+              <div class="cita-dot green"></div>
+              <div class="cita-info">
+                <div class="cita-nombre">Luis P.</div>
+                <div class="cita-tipo">Orientación</div>
+              </div>
+              <span class="cita-status confirmada">Confirmada</span>
+            </div>
+            <div class="cita-item">
+              <span class="cita-hora">14:30</span>
+              <div class="cita-dot blue"></div>
+              <div class="cita-info">
+                <div class="cita-nombre">Ana R.</div>
+                <div class="cita-tipo">Seguimiento académico</div>
+              </div>
+              <span class="cita-status confirmada">Confirmada</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <span class="section-title">Acciones rápidas</span>
+      </div>
+      <div class="quick-actions" style="margin-bottom:20px">
+        <button class="q-btn">
+          <i class="ti ti-file-plus" aria-hidden="true"></i>
+          Registrar caso
+        </button>
+        <button class="q-btn">
+          <i class="ti ti-calendar-plus" aria-hidden="true"></i>
+          Nueva cita
+        </button>
+        <button class="q-btn">
+          <i class="ti ti-chart-bar" aria-hidden="true"></i>
+          Generar reporte
+        </button>
+      </div>
+
+      <div class="section-header">
+        <span class="section-title">Casos recientes</span>
+        <a class="see-all">Ver todos →</a>
+      </div>
+      <div class="card">
+        <table class="recent-table">
+          <thead>
+            <tr>
+              <th>Estudiante</th>
+              <th>Tipo</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Rosa Herrera</td>
+              <td style="color:#94a3b8">Orientación vocacional</td>
+              <td style="color:#94a3b8">05/05/2025</td>
+              <td><span class="pill activo">Activo</span></td>
+            </tr>
+            <tr>
+              <td>Juan Morales</td>
+              <td style="color:#94a3b8">Dificultad académica</td>
+              <td style="color:#94a3b8">04/05/2025</td>
+              <td><span class="pill seguimiento">Seguimiento</span></td>
+            </tr>
+            <tr>
+              <td>Paola Castro</td>
+              <td style="color:#94a3b8">Situación personal</td>
+              <td style="color:#94a3b8">03/05/2025</td>
+              <td><span class="pill seguimiento">Seguimiento</span></td>
+            </tr>
+            <tr>
+              <td>Marcos Torres</td>
+              <td style="color:#94a3b8">Orientación académica</td>
+              <td style="color:#94a3b8">02/05/2025</td>
+              <td><span class="pill cerrado">Cerrado</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="text-align:center; padding: 24px 0 8px; font-size:11px; color:#94a3b8">
+        © 2025 Universidad de Panamá · Sistema SIAD
+      </div>
+    </div>
+  </div>
+</div>
