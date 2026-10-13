@@ -1,59 +1,163 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SIAD — Sistema Integral de Atención a la Discapacidad
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema web desarrollado como proyecto de tesis para apoyar la gestión y el seguimiento de casos relacionados con la atención a personas con discapacidad dentro del entorno institucional.
 
-## About Laravel
+El propósito de SIAD es centralizar la información de los casos y facilitar tareas administrativas como el registro, el seguimiento, la programación de citas y la generación de reportes.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+> **Estado del proyecto:** desarrollo académico en evolución. Las funciones descritas corresponden a los módulos identificados en el repositorio; su disponibilidad puede variar según la configuración y el estado actual de implementación.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Objetivos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Organizar la información relacionada con los casos de atención.
+- Facilitar el registro y la consulta de información de estudiantes.
+- Dar seguimiento a los casos y mantener un historial de atención.
+- Gestionar citas y consultar eventos de agenda.
+- Generar reportes de casos y documentos en formato PDF.
 
-## Learning Laravel
+## Módulos principales
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- **Autenticación y usuarios:** inicio de sesión, registro de usuarios y cierre de sesión.
+- **Panel principal:** acceso al panel de la aplicación.
+- **Registro de casos:** formularios relacionados con estudiantes y declaraciones de discapacidad.
+- **Seguimiento:** creación de registros de seguimiento, consulta del historial y visualización del perfil asociado a un caso.
+- **Agenda de citas:** consulta de citas, eventos y resúmenes; registro de citas y actualización de su estado.
+- **Reportes:** consulta de información de casos, reportes estadísticos y generación de documentos PDF.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+La disponibilidad de cada función depende de su implementación, las rutas habilitadas y la configuración del entorno.
 
-## Laravel Sponsors
+## Tecnologías
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+| Tecnología | Uso |
+|---|---|
+| PHP 8.2 o superior | Lenguaje del servidor |
+| Laravel 12 | Framework de la aplicación web |
+| Composer | Gestión de dependencias de PHP |
+| MySQL u otro motor compatible | Base de datos, según la configuración del proyecto |
+| Node.js y npm | Herramientas para dependencias y recursos del frontend |
+| Vite | Compilación y servidor de desarrollo de recursos |
+| Tailwind CSS 4 | Estilos de la interfaz |
+| barryvdh/laravel-dompdf | Generación de documentos PDF |
 
-### Premium Partners
+## Requisitos previos
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Antes de instalar el proyecto, asegúrate de tener:
 
-## Contributing
+- PHP 8.2 o una versión compatible con las dependencias.
+- Composer.
+- Node.js y npm.
+- Un motor de base de datos compatible y una base de datos preparada para SIAD.
+- Git, para clonar el repositorio.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Instalación local
 
-## Code of Conduct
+### 1. Clonar el repositorio
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+git clone https://github.com/GabrielEGonzalez/SIAD.git
+cd SIAD
+```
 
-## Security Vulnerabilities
+### 2. Instalar las dependencias de PHP
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+composer install
+```
 
-## License
+### 3. Configurar el entorno
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Copia el archivo de ejemplo de variables de entorno y genera la clave de Laravel:
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+En Windows puedes copiar `.env.example` como `.env` desde el explorador de archivos o ejecutar `copy .env.example .env` en CMD.
+
+Edita `.env` y configura los datos de conexión de la base de datos, además de los demás servicios que utilice tu entorno local.
+
+### 4. Instalar las dependencias del frontend
+
+```bash
+npm install
+```
+
+Para compilar los recursos:
+
+```bash
+npm run build
+```
+
+Durante el desarrollo, puedes usar:
+
+```bash
+npm run dev
+```
+
+### 5. Preparar la base de datos
+
+Verifica que la base de datos de SIAD exista y que su estructura esté preparada antes de ejecutar migraciones. Revisa las migraciones disponibles y las instrucciones del proyecto para evitar modificar o perder datos de una base de datos existente.
+
+Cuando hayas confirmado que las migraciones corresponden a tu instalación, puedes ejecutar:
+
+```bash
+php artisan migrate
+```
+
+### 6. Iniciar la aplicación
+
+```bash
+php artisan serve
+```
+
+Abre la dirección local que indique Laravel en la terminal, normalmente:
+
+```
+http://127.0.0.1:8000
+```
+
+## Dependencias que no se suben al repositorio
+
+Las carpetas `vendor/` y `node_modules/` no necesitan versionarse: se generan al instalar las dependencias con Composer y npm. Por eso, no es necesario subirlas a GitHub, siempre que se incluyan los archivos de bloqueo y manifiestos correspondientes.
+
+## Estructura general
+
+```text
+SIAD/
+├── app/                 # Controladores, modelos y lógica de la aplicación
+├── bootstrap/           # Inicialización de Laravel
+├── config/              # Configuración
+├── database/            # Migraciones, factories y seeders
+├── public/              # Punto de entrada y recursos públicos
+├── resources/           # Vistas y recursos del frontend
+├── routes/              # Rutas web y de consola
+├── storage/             # Archivos generados y registros
+├── tests/               # Pruebas automatizadas
+├── composer.json        # Dependencias PHP
+├── composer.lock        # Versiones instaladas de dependencias PHP
+├── package.json         # Dependencias y scripts frontend
+├── package-lock.json    # Versiones instaladas de dependencias frontend
+└── vite.config.js       # Configuración de Vite
+```
+
+## Consideraciones de seguridad
+
+- No publiques el archivo `.env` ni credenciales, contraseñas o claves privadas.
+- Usa datos ficticios al realizar demostraciones o pruebas.
+- La información relacionada con discapacidad y atención puede ser sensible; limita el acceso a usuarios autorizados y evita subir datos reales al repositorio.
+- Antes de desplegar el sistema, revisa la autenticación, autorización por roles, validaciones, protección de archivos y configuración de producción.
+
+## Contexto académico
+
+SIAD se desarrolla como proyecto de tesis en el área de Ingeniería en Informática. La documentación y las funciones del sistema pueden evolucionar a medida que avance el proyecto.
+
+## Autor
+
+**Gabriel Enrique Gonzalez**
+
+- GitHub: [@GabrielEGonzalez](https://github.com/GabrielEGonzalez)
+- Repositorio: [GabrielEGonzalez/SIAD](https://github.com/GabrielEGonzalez/SIAD)
+
+---
+
+Desarrollado con Laravel.
